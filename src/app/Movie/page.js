@@ -10,6 +10,8 @@ import {
   Divider,
   Typography,
   Button,
+  Modal,
+  ModalDialog,
 } from "@mui/joy";
 
 import { Link as MuiLink } from "@mui/joy";
@@ -93,28 +95,11 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
               width="50"
               height="50"
               fill="currentColor"
-              class="bi bi-skip-backward-fill"
+              className="bi bi-skip-backward-fill"
               viewBox="0 0 16 16"
             >
               <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5" />
-            </svg>{" "}
-            {/* <svg
-              width="50"
-              height="50"
-              className="text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 6v12m8-12v12l-8-6 8-6Z"
-              />
-            </svg> */}
+            </svg>
           </Link>
         </Grid>
       </Grid>
@@ -144,7 +129,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           color="warning"
           size="sm"
           variant="soft"
-          placeholder="Search a movie..."
+          placeholder="Search for a movie..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -154,18 +139,31 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
               Search Movie
             </Button>
           }
-        />{" "}
+        />
       </Grid>
     </Grid>
   );
 }
 
 function MovieList({ movies }) {
+  const [open, setOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  const handleOpen = (movie) => {
+    setOpen(true);
+    setSelectedMovie(movie);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedMovie(null);
+  };
+
   let imgUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
     <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-      {movies.length == 0 ? (
+      {movies.length === 0 ? (
         <div className="no-data-msg">
           <p>No movies found!</p>
         </div>
@@ -194,12 +192,14 @@ function MovieList({ movies }) {
                     loading="lazy"
                     alt={item.title}
                     width={318}
-                    height={475} // Adjust the height according to your design
+                    height={475}
                   />
                 </AspectRatio>
               </CardOverflow>
               <CardContent>
-                <Typography level="title-md">{item.title}</Typography>
+                <Typography className="title" level="title-md">
+                  {item.title}
+                </Typography>
                 <Typography className="overview" level="body-sm">
                   {item.overview
                     ? item.overview
@@ -217,7 +217,7 @@ function MovieList({ movies }) {
                     fontWeight="md"
                     textColor="text.secondary"
                   >
-                    Total votes: {item.vote_count}
+                    Total Votes: {item.vote_count}
                   </Typography>
                   <Divider orientation="vertical" />
                   <Typography
@@ -235,6 +235,59 @@ function MovieList({ movies }) {
                   >
                     {item.original_language.toUpperCase()}
                   </Typography>
+                </CardContent>
+                <CardContent>
+                  <Button
+                    variant="soft"
+                    color="primary"
+                    onClick={() => handleOpen(item)}
+                  >
+                    Additional information
+                  </Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    slotProps={{
+                      backdrop: {
+                        sx: {
+                          opacity: 0,
+                          backdropFilter: "none",
+                          transition: `opacity 400ms, backdrop-filter 400ms`,
+                        },
+                      },
+                    }}
+                  >
+                    <ModalDialog style={{ textAlign: "left" }}>
+                      <Typography variant="h2" style={{ textAlign: "center" }}>
+                        <b>Movie Details</b>
+                      </Typography>
+                      {selectedMovie && (
+                        <>
+                          <Typography>
+                            <b>Title:</b> {selectedMovie.title}
+                          </Typography>
+                          <Typography>
+                            <b>Overview: </b>
+                            {selectedMovie.overview}
+                          </Typography>
+                          <Typography>
+                            <b>Release date: </b>
+                            {selectedMovie.release_date}
+                          </Typography>
+                          <Typography>
+                            <b>Popularity: </b>
+                            {selectedMovie.popularity}
+                          </Typography>
+                          <Typography>
+                            <b>Average vote:</b> {selectedMovie.vote_average}
+                          </Typography>
+                          <Typography>
+                            <b>Vote count:</b> {selectedMovie.vote_count}
+                          </Typography>
+                        </>
+                      )}
+                    </ModalDialog>
+                  </Modal>
                 </CardContent>
               </CardOverflow>
             </Card>
