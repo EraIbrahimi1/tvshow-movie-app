@@ -9,6 +9,7 @@ import {
   CardContent,
   Divider,
   Typography,
+  Button,
 } from "@mui/joy";
 
 import { Link as MuiLink } from "@mui/joy";
@@ -126,13 +127,19 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
               key={position}
               name={value}
               onClick={(e) => getMovies(e.target.name)}
+              sx={{
+                width: "70px",
+                display: "flex",
+                justifyContent: "center",
+                borderRadius: "8px",
+              }}
             >
               {value}
             </MuiLink>
           ))}
         </nav>
       </Grid>
-      <Grid xs={3}>
+      <Grid mt="20px" xs={3}>
         <Input
           color="warning"
           size="sm"
@@ -142,8 +149,12 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           onChange={(e) => {
             setSearch(e.target.value);
           }}
-        />
-        <button onClick={searchMovies}>Search Movie</button>
+          endDecorator={
+            <Button color="neutral" onClick={searchMovies}>
+              Search Movie
+            </Button>
+          }
+        />{" "}
       </Grid>
     </Grid>
   );
