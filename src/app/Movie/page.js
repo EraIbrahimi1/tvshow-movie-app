@@ -45,7 +45,7 @@ function App() {
   }, [fetchUrl]);
 
   const getMovies = (movieType) => {
-    let newUrl = ""; // Declare a new variable to store the updated URL
+    let newUrl = "";
 
     if (movieType === "Popular") {
       newUrl = `${apiBaseUrl}/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`;
@@ -127,7 +127,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
       <Grid mt="20px" xs={3}>
         <Input
           color="warning"
-          size="sm"
+          size="md"
           variant="soft"
           placeholder="Search for a movie..."
           value={search}
@@ -135,7 +135,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
             setSearch(e.target.value);
           }}
           endDecorator={
-            <Button color="neutral" onClick={searchMovies}>
+            <Button color="neutral" size="md" onClick={searchMovies}>
               Search Movie
             </Button>
           }
@@ -217,7 +217,7 @@ function MovieList({ movies }) {
                     fontWeight="md"
                     textColor="text.secondary"
                   >
-                    Total Votes: {item.vote_count}
+                    Votes: {item.vote_count}
                   </Typography>
                   <Divider orientation="vertical" />
                   <Typography
@@ -242,7 +242,7 @@ function MovieList({ movies }) {
                     color="primary"
                     onClick={() => handleOpen(item)}
                   >
-                    Additional information
+                    Additional details
                   </Button>
                   <Modal
                     open={open}
