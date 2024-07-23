@@ -86,9 +86,9 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
   let arr = ["Popular", "Kids", "Drama", "Thriller"];
 
   return (
-    <Grid className="header" container spacing={2} sx={{ flexGrow: 1 }}>
-      <Grid xs={1}>
-        <Grid mt="15px" ml="20px" xs={1}>
+    <Grid container spacing={2} sx={{ flexGrow: 1 }} className="header">
+      <Grid item xs={12} sm={2}>
+        <Grid item mt="15px" ml="20px">
           <Link href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           </Link>
         </Grid>
       </Grid>
-      <Grid mt="24px" xs={8}>
+      <Grid item xs={12} sm={5} mt="24px">
         <nav className="navigation">
           {arr.map((value, position) => (
             <MuiLink
@@ -124,16 +124,14 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           ))}
         </nav>
       </Grid>
-      <Grid mt="20px" xs={3}>
+      <Grid item xs={12} sm={5} mt="20px">
         <Input
           color="warning"
           size="md"
           variant="soft"
           placeholder="Search for a movie..."
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
+          onChange={(e) => setSearch(e.target.value)}
           endDecorator={
             <Button color="neutral" size="md" onClick={searchMovies}>
               Search Movie
@@ -144,7 +142,6 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
     </Grid>
   );
 }
-
 function MovieList({ movies }) {
   const [open, setOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -177,7 +174,7 @@ function MovieList({ movies }) {
               variant="soft"
             >
               <CardOverflow>
-                <AspectRatio ratio="2">
+                <AspectRatio ratio="1">
                   <Image
                     src={
                       item.poster_path == null

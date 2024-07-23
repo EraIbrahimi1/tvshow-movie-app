@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { extendTheme } from "@mui/joy/styles";
 
 import {
   Button,

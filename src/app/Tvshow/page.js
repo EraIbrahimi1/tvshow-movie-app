@@ -47,10 +47,10 @@ function App() {
     let newUrl = "";
 
     if (TvShowType === "Drama") {
-      newUrl = `${apiBaseUrl}/discover/tv?with_genres=18&sort_by=popularity.desc&api_key=${apiKey}`;
+      newUrl = `${apiBaseUrl}/discover/tv?with_genres=18&api_key=${apiKey}`;
     }
     if (TvShowType === "Family") {
-      newUrl = `${apiBaseUrl}/discover/tv?with_genres=10751&sort_by=popularity.desc&api_key=${apiKey}`;
+      newUrl = `${apiBaseUrl}/discover/tv?with_genres=10751&api_key=${apiKey}`;
     }
     if (TvShowType === "Soap") {
       newUrl = `${apiBaseUrl}/discover/tv?with_genres=10766&sort_by=popularity.desc&api_key=${apiKey}`;
@@ -83,9 +83,9 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
   let arr = ["Drama", "Family", "Soap", "Animation"];
 
   return (
-    <Grid className="header" container spacing={2} sx={{ flexGrow: 1 }}>
-      <Grid xs={1}>
-        <Grid mt="15px" ml="20px" xs={1}>
+    <Grid container spacing={2} sx={{ flexGrow: 1 }} className="header">
+      <Grid item xs={12} sm={1}>
+        <Grid item xs={12} sm={1} mt="15px" ml="20px">
           <Link href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,7 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
           </Link>
         </Grid>
       </Grid>
-      <Grid mt="24px" xs={8}>
+      <Grid item xs={12} sm={8} mt="24px">
         <nav className="navigation">
           {arr.map((value, position) => (
             <MuiLink
@@ -121,16 +121,14 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
           ))}
         </nav>
       </Grid>
-      <Grid mt="20px" xs={3}>
+      <Grid item xs={12} sm={3} mt="20px">
         <Input
           color="success"
           size="md"
           variant="soft"
           placeholder="Search for a tv show..."
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
+          onChange={(e) => setSearch(e.target.value)}
           endDecorator={
             <Button color="neutral" size="md" onClick={searchTvShows}>
               Search TvShow
@@ -173,7 +171,7 @@ function TvShowList({ tvShows }) {
               variant="soft"
             >
               <CardOverflow>
-                <AspectRatio ratio="2">
+                <AspectRatio ratio="1">
                   <Image
                     src={
                       item.poster_path == null
