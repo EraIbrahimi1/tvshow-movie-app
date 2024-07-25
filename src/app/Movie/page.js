@@ -47,6 +47,9 @@ function App() {
   const getMovies = (movieType) => {
     let newUrl = "";
 
+    if (movieType === "Western") {
+      newUrl = `${apiBaseUrl}/discover/movie?with_genres=37&sort_by=popularity.desc&api_key=${apiKey}`;
+    }
     if (movieType === "Popular") {
       newUrl = `${apiBaseUrl}/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`;
     }
@@ -83,27 +86,34 @@ function App() {
 }
 
 function Header({ getMovies, search, setSearch, searchMovies }) {
-  let arr = ["Popular", "Kids", "Drama", "Thriller"];
+  let arr = ["Western", "Popular", "Kids", "Drama", "Thriller"];
 
   return (
-    <Grid container spacing={2} sx={{ flexGrow: 1 }} className="header">
-      <Grid item xs={12} sm={2}>
-        <Grid item mt="15px" ml="20px">
+    <Grid
+      container
+      spacing={1}
+      sx={{ flexGrow: 1 }}
+      alignItems="center"
+      className="header"
+    >
+      <Grid item xs={12} sm={1}>
+        <Grid item>
           <Link href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
+              width="35"
+              height="35"
               fill="currentColor"
               className="bi bi-skip-backward-fill"
               viewBox="0 0 16 16"
+              style={{ marginTop: "7px" }}
             >
               <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5" />
             </svg>
           </Link>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={5} mt="24px">
+      <Grid item xs={12} sm={6}>
         <nav className="navigation">
           {arr.map((value, position) => (
             <MuiLink
@@ -124,7 +134,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           ))}
         </nav>
       </Grid>
-      <Grid item xs={12} sm={3} mt="20px">
+      <Grid item xs={12} sm={5}>
         <Input
           color="warning"
           size="md"
@@ -133,7 +143,7 @@ function Header({ getMovies, search, setSearch, searchMovies }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           endDecorator={
-            <Button color="neutral" size="md" onClick={searchMovies}>
+            <Button color="warning" size="md" onClick={searchMovies}>
               Search Movie
             </Button>
           }
@@ -159,7 +169,7 @@ function MovieList({ movies }) {
   let imgUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
-    <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+    <Grid container spacing={1} sx={{ flexGrow: 1 }}>
       {movies.length === 0 ? (
         <div className="no-data-msg">
           <p>No movies found!</p>
@@ -254,33 +264,65 @@ function MovieList({ movies }) {
                       },
                     }}
                   >
-                    <ModalDialog style={{ textAlign: "left" }}>
-                      <Typography variant="h2" style={{ textAlign: "center" }}>
+                    <ModalDialog
+                      variant="solid"
+                      color="warning"
+                      style={{ textAlign: "left" }}
+                    >
+                      <Typography
+                        variant="h2"
+                        style={{ color: "white", textAlign: "center" }}
+                      >
                         <b>Movie Details</b>
                       </Typography>
                       {selectedMovie && (
                         <>
-                          <Typography>
-                            <b>Title:</b> {selectedMovie.title}
-                          </Typography>
-                          <Typography>
-                            <b>Overview: </b>
-                            {selectedMovie.overview}
-                          </Typography>
-                          <Typography>
-                            <b>Release date: </b>
-                            {selectedMovie.release_date}
-                          </Typography>
-                          <Typography>
-                            <b>Popularity: </b>
-                            {selectedMovie.popularity}
-                          </Typography>
-                          <Typography>
-                            <b>Average vote:</b> {selectedMovie.vote_average}
-                          </Typography>
-                          <Typography>
-                            <b>Vote count:</b> {selectedMovie.vote_count}
-                          </Typography>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <Image
+                              src={
+                                selectedMovie.poster_path == null
+                                  ? defaultMovieImg
+                                  : imgUrl + selectedMovie.poster_path
+                              }
+                              srcSet={
+                                selectedMovie.poster_path == null
+                                  ? defaultMovieImg
+                                  : `${imgUrl}${selectedMovie.poster_path}?auto=format&fit=crop&w=318&dpr=2 2x`
+                              }
+                              width={180}
+                              height={215}
+                              style={{ marginRight: "20px" }}
+                            />
+                            <div>
+                              <Typography style={{ color: "white" }}>
+                                <b>Title:</b> {selectedMovie.title}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Overview: </b>
+                                {selectedMovie.overview}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Release date: </b>
+                                {selectedMovie.release_date}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Popularity: </b>
+                                {selectedMovie.popularity}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Average vote:</b>{" "}
+                                {selectedMovie.vote_average}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Vote count:</b> {selectedMovie.vote_count}
+                              </Typography>
+                            </div>
+                          </div>
                         </>
                       )}
                     </ModalDialog>

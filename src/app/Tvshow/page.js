@@ -46,8 +46,11 @@ function App() {
   const getTvShows = (TvShowType) => {
     let newUrl = "";
 
-    if (TvShowType === "Drama") {
-      newUrl = `${apiBaseUrl}/discover/tv?with_genres=18&api_key=${apiKey}`;
+    if (TvShowType === "Comedy") {
+      newUrl = `${apiBaseUrl}/discover/tv?with_genres=35&api_key=${apiKey}`;
+    }
+    if (TvShowType === "Reality") {
+      newUrl = `${apiBaseUrl}/discover/tv?with_genres=10764&api_key=${apiKey}`;
     }
     if (TvShowType === "Family") {
       newUrl = `${apiBaseUrl}/discover/tv?with_genres=10751&api_key=${apiKey}`;
@@ -55,8 +58,8 @@ function App() {
     if (TvShowType === "Soap") {
       newUrl = `${apiBaseUrl}/discover/tv?with_genres=10766&sort_by=popularity.desc&api_key=${apiKey}`;
     }
-    if (TvShowType === "Animation") {
-      newUrl = `${apiBaseUrl}/discover/tv?with_genres=16&sort_by=popularity.desc&api_key=${apiKey}`;
+    if (TvShowType === "Talk") {
+      newUrl = `${apiBaseUrl}/discover/tv?with_genres=10767&sort_by=popularity.desc&api_key=${apiKey}`;
     }
     setFetchUrl(newUrl);
   };
@@ -80,27 +83,32 @@ function App() {
 }
 
 function Header({ getTvShows, search, setSearch, searchTvShows }) {
-  let arr = ["Drama", "Family", "Soap", "Animation"];
+  let arr = ["Comedy", "Reality", "Family", "Soap", "Talk"];
 
   return (
-    <Grid container spacing={2} sx={{ flexGrow: 1 }} className="header">
+    <Grid
+      container
+      spacing={1}
+      sx={{ flexGrow: 1 }}
+      alignItems="center"
+      className="header"
+    >
       <Grid item xs={12} sm={1}>
-        <Grid item xs={12} sm={1} mt="15px" ml="20px">
-          <Link href="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="50"
-              height="50"
-              fill="currentColor"
-              className="bi bi-skip-backward-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5" />
-            </svg>
-          </Link>
-        </Grid>
+        <Link href="/">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="35"
+            height="35"
+            fill="currentColor"
+            className="bi bi-skip-backward-fill"
+            viewBox="0 0 16 16"
+            style={{ marginTop: "7px" }}
+          >
+            <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5" />
+          </svg>
+        </Link>
       </Grid>
-      <Grid item xs={12} sm={8} mt="24px">
+      <Grid item xs={12} sm={6}>
         <nav className="navigation">
           {arr.map((value, position) => (
             <MuiLink
@@ -121,7 +129,7 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
           ))}
         </nav>
       </Grid>
-      <Grid item xs={12} sm={3} mt="20px">
+      <Grid item xs={12} sm={5}>
         <Input
           color="success"
           size="md"
@@ -130,7 +138,7 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           endDecorator={
-            <Button color="neutral" size="md" onClick={searchTvShows}>
+            <Button color="success" size="md" onClick={searchTvShows}>
               Search TvShow
             </Button>
           }
@@ -156,7 +164,7 @@ function TvShowList({ tvShows }) {
   let imgUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
-    <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+    <Grid container spacing={1} sx={{ flexGrow: 1 }}>
       {tvShows.length == 0 ? (
         <div className="no-data-msg">
           <p>No tv shows found!</p>
@@ -184,8 +192,8 @@ function TvShowList({ tvShows }) {
                         : `${imgUrl}${item.poster_path}?auto=format&fit=crop&w=318&dpr=2 2x`
                     }
                     alt={item.original_name}
-                    width={318}
-                    height={475}
+                    width={150}
+                    height={225}
                     priority
                   />
                 </AspectRatio>
@@ -251,33 +259,67 @@ function TvShowList({ tvShows }) {
                       },
                     }}
                   >
-                    <ModalDialog style={{ textAlign: "left" }}>
-                      <Typography variant="h2" style={{ textAlign: "center" }}>
+                    <ModalDialog
+                      variant="solid"
+                      color="success"
+                      style={{ textAlign: "left" }}
+                    >
+                      <Typography
+                        variant="h2"
+                        style={{ color: "white", textAlign: "center" }}
+                      >
                         <b>TV Show Details</b>
                       </Typography>
                       {selectedTvShow && (
                         <>
-                          <Typography>
-                            <b>Title:</b> {selectedTvShow.original_name}
-                          </Typography>
-                          <Typography>
-                            <b>Overview: </b>
-                            {selectedTvShow.overview}
-                          </Typography>
-                          <Typography>
-                            <b>First airing date: </b>
-                            {selectedTvShow.first_air_date}
-                          </Typography>
-                          <Typography>
-                            <b>Popularity: </b>
-                            {selectedTvShow.popularity}
-                          </Typography>
-                          <Typography>
-                            <b>Average vote:</b> {selectedTvShow.vote_average}
-                          </Typography>
-                          <Typography>
-                            <b>Vote count:</b> {selectedTvShow.vote_count}
-                          </Typography>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <Image
+                              src={
+                                selectedTvShow.poster_path == null
+                                  ? defaultMovieImg
+                                  : imgUrl + selectedTvShow.poster_path
+                              }
+                              srcSet={
+                                selectedTvShow.poster_path == null
+                                  ? defaultMovieImg
+                                  : `${imgUrl}${selectedTvShow.poster_path}?auto=format&fit=crop&w=318&dpr=2 2x`
+                              }
+                              loading="lazy"
+                              alt={selectedTvShow.original_name}
+                              width={180}
+                              height={215}
+                              style={{ marginRight: "20px" }}
+                            />
+                            <div>
+                              <Typography style={{ color: "white" }}>
+                                <b>Title:</b> {selectedTvShow.original_name}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Overview: </b>
+                                {selectedTvShow.overview}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>First airing date: </b>
+                                {selectedTvShow.first_air_date}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Popularity: </b>
+                                {selectedTvShow.popularity}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Average vote:</b>{" "}
+                                {selectedTvShow.vote_average}
+                              </Typography>
+                              <Typography style={{ color: "white" }}>
+                                <b>Vote count:</b> {selectedTvShow.vote_count}
+                              </Typography>
+                            </div>
+                          </div>
                         </>
                       )}
                     </ModalDialog>
