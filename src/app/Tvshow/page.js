@@ -121,7 +121,7 @@ function Header({ getTvShows, search, setSearch, searchTvShows }) {
           ))}
         </nav>
       </Grid>
-      <Grid item xs={12} sm={5} mt="20px">
+      <Grid item xs={12} sm={3} mt="20px">
         <Input
           color="success"
           size="md"
