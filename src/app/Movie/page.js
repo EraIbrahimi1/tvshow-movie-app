@@ -257,7 +257,7 @@ function MovieList({ movies }) {
                     slotProps={{
                       backdrop: {
                         sx: {
-                          opacity: 0,
+                          opacity: 1.5,
                           backdropFilter: "none",
                           transition: `opacity 400ms, backdrop-filter 400ms`,
                         },
