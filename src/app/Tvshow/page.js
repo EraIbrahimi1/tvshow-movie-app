@@ -252,7 +252,7 @@ function TvShowList({ tvShows }) {
                     slotProps={{
                       backdrop: {
                         sx: {
-                          opacity: 0,
+                          opacity: 0.5,
                           backdropFilter: "none",
                           transition: `opacity 400ms, backdrop-filter 400ms`,
                         },
